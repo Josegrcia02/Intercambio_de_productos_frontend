@@ -1,6 +1,14 @@
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './routes/AppRouter';
+import './App.css';
+
 function App() {
   return (
-    <h1>Intercambio Frontend V1.0</h1>
-  )
+    // BrowserRouter debe envolver toda la aplicación
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
+  );
 }
-export default App
+
+export default App;
