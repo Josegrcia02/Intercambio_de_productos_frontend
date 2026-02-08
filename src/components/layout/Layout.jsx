@@ -12,7 +12,8 @@ const Layout = () => {
 
       {/* Contenido Principal */}
       <div className="md:ml-64 min-h-screen flex flex-col pb-16 md:pb-0">
-        <main className="flex-1 w-full mx-auto max-w-7xl">
+        {/* Asegúrate de que esta línea tenga 'bg-muted/30' */}
+        <main className="flex-1 w-full h-full bg-muted/30"> 
             <Outlet />
         </main>
       </div>
