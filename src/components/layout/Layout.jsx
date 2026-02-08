@@ -1,19 +1,26 @@
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Navbar from '/Navbar';
+import { DesktopNav } from './DesktopNav';
+import { BottomNav } from './BottomNav';
 
-// Este componente envuelve a todas las páginas
-// Renderiza siempre la Navbar arriba y el contenido cambiante abajo
-export default function Layout() {
+//
+const Layout = () => {
   return (
-    <div>
-      <Navbar />
-      <main style={{ padding: '2rem' }}>
-        {/* Outlet es donde se pintan las páginas hijas (Home, Login...) */}
-        <Outlet />
-      </main>
-      <footer>
-        <p>© 2025 Intercambio Estudiantil</p>
-      </footer>
+    <div className="min-h-screen bg-white">
+      {/* Navegación Escritorio */}
+      <DesktopNav />
+
+      {/* Contenido Principal */}
+      <div className="md:ml-64 min-h-screen flex flex-col pb-16 md:pb-0">
+        <main className="flex-1 w-full mx-auto max-w-7xl">
+            <Outlet />
+        </main>
+      </div>
+
+      {/* Navegación Móvil */}
+      <BottomNav />
     </div>
   );
-}
+};
+
+export default Layout;

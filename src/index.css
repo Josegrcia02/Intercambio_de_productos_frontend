@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Tus estilos extra (como el fondo gris) */
+body {
+  background-color: #f9fafb;
+}
