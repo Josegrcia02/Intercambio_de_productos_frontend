@@ -157,7 +157,7 @@ const ProfilePage = () => {
                 title: rawProduct.titulo,
                 description: rawProduct.descripcion,
                 price: parseFloat(rawProduct.precio || 0),
-                category: rawProduct.categoria?.nombre || "General",
+                category: rawProduct.categoria_detalle?.nombre || "General",
                 image: getImageUrl(mainImage),
                 sellerName: rawProduct.usuario?.username || "Usuario",
                 sellerImage: getImageUrl(rawProduct.usuario?.foto_perfil),

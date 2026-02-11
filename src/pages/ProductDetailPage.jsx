@@ -52,7 +52,7 @@ const ProductDetailPage = () => {
           title: data.titulo,
           description: data.descripcion,
           price: data.precio, 
-          category: data.categoria?.nombre || "General",
+          category: data.categoria_detalle?.nombre || data.categoria?.nombre || "General",
           seller: data.usuario,
           sellerName: data.usuario?.alias || data.usuario?.username || "Usuario desconocido",
           sellerNre: data.usuario?.username,
