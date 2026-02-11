@@ -1,10 +1,9 @@
 import { createContext, useContext } from 'react';
 
-// 1. Creamos el contexto (la "caja" donde guardamos los datos)
-export const AuthContext = createContext();
+// 1. Crear el contexto (la caja vacía)
+export const AuthContext = createContext(null);
 
-// 2. Creamos el hook personalizado (ESTO ES LO QUE TE FALTABA)
-// Esta función permite que tus páginas pidan los datos del usuario fácilmente
+// 2. El Hook para usarlo (la herramienta)
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

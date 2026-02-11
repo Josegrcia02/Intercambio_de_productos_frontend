@@ -1,68 +1,69 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MapPin } from "lucide-react";
-// Asegúrate de que estas rutas de importación sean correctas según tu estructura
-import { Badge } from '../ui/badge'; 
-import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
-import { Card, CardContent, CardFooter } from '../ui/card';
+import { User } from 'lucide-react';
+import { Card, CardContent } from '../ui/card';
+import { Badge } from '../ui/badge';
 
-export function ProductCard({ product }) {
-  const navigate = useNavigate();
-
-  // Formatear precio a euros de forma segura
-  const formattedPrice = new Intl.NumberFormat('es-ES', {
-    style: 'currency',
-    currency: 'EUR',
-  }).format(product.price || 0);
-
+export const ProductCard = ({ product, onClick }) => {
   return (
     <Card 
-      // AQUÍ ESTABA EL ERROR: Ahora usamos navigate directamente
-      onClick={() => navigate(`/producto/${product.id}`)}
-      className="group overflow-hidden cursor-pointer border-border/60 shadow-sm hover:shadow-md transition-all"
+      className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all duration-300 border-border/50 bg-card"
+      onClick={onClick}
     >
-      {/* Imagen y Badge */}
-      <div className="aspect-square relative overflow-hidden bg-muted/20">
-        <img
-          src={product.image || "https://via.placeholder.com/400"} 
-          alt={product.title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <div className="absolute top-3 right-3 z-10">
-          <Badge variant="secondary" className="font-medium bg-white/90 backdrop-blur-sm text-foreground shadow-sm">
-            {product.category || "General"}
-          </Badge>
-        </div>
+      {/* IMAGEN */}
+      <div className="aspect-[4/3] relative overflow-hidden bg-muted">
+        {product.image ? (
+          <img 
+            src={product.image} 
+            alt={product.title} 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-muted/50">
+            <span className="text-4xl">📷</span>
+          </div>
+        )}
+        <Badge className="absolute top-3 right-3 bg-white/90 text-black hover:bg-white/100 backdrop-blur-sm shadow-sm">
+          {product.category}
+        </Badge>
       </div>
-      
-      {/* Contenido Principal */}
+
       <CardContent className="p-4">
-        <div className="flex justify-between items-start gap-2 mb-2">
-            <h3 className="font-semibold text-foreground text-lg leading-tight line-clamp-2 flex-1">
-                {product.title}
-            </h3>
-             <p className="text-lg font-bold text-primary whitespace-nowrap">
-                {formattedPrice}
-            </p>
+        <div className="mb-2">
+          {/* ✨ CAMBIO: Lógica para precio 0 */}
+          {product.price === 0 ? (
+             <p className="text-sm font-bold text-green-600 uppercase tracking-wide">
+               Gratis / Intercambio
+             </p>
+          ) : (
+             <p className="text-lg font-bold text-primary">
+               {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(product.price)}
+             </p>
+          )}
+
+          <h3 className="font-medium text-card-foreground line-clamp-1 group-hover:text-primary transition-colors">
+            {product.title}
+          </h3>
         </div>
-       
-        <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-4">
-          <MapPin className="w-4 h-4 shrink-0" />
-          <span className="truncate">{product.location || "Ubicación no disponible"}</span>
+        
+        <p className="text-sm text-muted-foreground line-clamp-2 mb-4 h-10">
+          {product.description}
+        </p>
+
+        <div className="flex items-center gap-2 pt-2 border-t border-border/50">
+          <div className="w-6 h-6 rounded-full overflow-hidden bg-muted flex items-center justify-center border border-border">
+            {product.sellerImage ? (
+              <img src={product.sellerImage} alt={product.sellerName} className="w-full h-full object-cover" />
+            ) : (
+              <User className="w-3 h-3 text-muted-foreground" />
+            )}
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-medium text-card-foreground">
+              {product.sellerName || "Usuario"} 
+            </span>
+          </div>
         </div>
       </CardContent>
-
-       {/* Footer con Usuario */}
-      <CardFooter className="p-4 pt-0 border-t border-border/40 flex items-center gap-3">
-         <Avatar className="w-8 h-8 border border-border/50">
-            <AvatarImage src={product.userAvatar} />
-            <AvatarFallback className="text-xs">{product.userName?.charAt(0) || "U"}</AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground truncate">{product.userName || "Usuario"}</p>
-            <p className="text-xs text-muted-foreground">Publicado recientemente</p>
-          </div>
-      </CardFooter>
     </Card>
   );
-}
+};
