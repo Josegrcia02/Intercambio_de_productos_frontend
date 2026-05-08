@@ -85,8 +85,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // --- 4. FUNCIÓN LOGIN CON GOOGLE ---
+  const loginWithGoogle = async (credential) => {
+    try {
+      // Enviar el token de Google al backend
+      const response = await api.post('/token/google/', { credential });
+      const { access, refresh, user: userData } = response.data;
+
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+      localStorage.setItem('user_data', JSON.stringify(userData));
+      
+      setUser(userData);
+      setIsAuthenticated(true);
+      
+      // Redirigir al Home
+      navigate('/');
+      
+      return true;
+    } catch (error) {
+      console.error("Error en login con Google:", error);
+      throw error;
+    }
+  };
+
   // Valores que exportamos al resto de la app
-  const value = { user, isAuthenticated, loading, login, logout };
+  const value = { user, isAuthenticated, loading, login, loginWithGoogle, logout };
 
   return (
     <AuthContext.Provider value={value}>

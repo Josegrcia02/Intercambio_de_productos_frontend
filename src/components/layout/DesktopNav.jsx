@@ -25,11 +25,11 @@ export function DesktopNav() {
     <div className="hidden md:flex md:flex-col w-64 bg-gray-50 border-r border-gray-200 min-h-screen fixed left-0 top-0">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
-            <Package className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden">
+            <img src="/logo.png" alt="HellinMarket Logo" className="w-full h-full object-cover" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900">IntercambioIES</h2>
+            <h2 className="text-lg font-bold text-gray-900">HellinMarket</h2>
             <p className="text-xs text-gray-500">Estudiantes</p>
           </div>
         </div>
