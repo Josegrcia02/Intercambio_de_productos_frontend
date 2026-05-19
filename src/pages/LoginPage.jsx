@@ -124,7 +124,7 @@ const LoginPage = () => {
               ) : (
                 <>
                   <LogIn className="mr-2 h-5 w-5" />
-                  Iniciar Sesión Manual
+                  Entrar con NRE
                 </>
               )}
             </Button>
