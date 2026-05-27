@@ -63,7 +63,7 @@ const LoginPage = () => {
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-10 text-center relative overflow-hidden group">
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="w-24 h-24 flex items-center justify-center mx-auto mb-4 transform group-hover:scale-105 transition-transform duration-300">
-            <img src="/logo.png" alt="HellinMarket Logo" className="w-full h-full object-contain drop-shadow-md" />
+            <img src="/logo_login.png" alt="HellinMarket Logo" className="w-full h-full object-contain drop-shadow-md" />
           </div>
           <h2 className="text-3xl font-extrabold text-white tracking-tight">HellinMarket</h2>
           <p className="text-blue-100 text-sm mt-2 font-medium">Inicia sesión para descubrir, vender e intercambiar</p>
