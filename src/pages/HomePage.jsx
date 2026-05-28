@@ -24,7 +24,12 @@ const HomePage = () => {
   const [priceFilter, setPriceFilter] = useState("none");
   const [customMinPrice, setCustomMinPrice] = useState(0);
   const [customMaxPrice, setCustomMaxPrice] = useState(1200);
+  const [customMinInput, setCustomMinInput] = useState("0");
   const [customMaxInput, setCustomMaxInput] = useState("1200");
+
+  useEffect(() => {
+    setCustomMinInput(String(customMinPrice));
+  }, [customMinPrice]);
 
   useEffect(() => {
     setCustomMaxInput(String(customMaxPrice));
@@ -242,12 +247,27 @@ const HomePage = () => {
                       min="0"
                       max={customMaxPrice - 10}
                       step="10"
-                      value={customMinPrice}
+                      value={customMinInput}
                       onChange={(e) => {
-                        const value = Number(e.target.value);
-                        if (Number.isNaN(value)) return;
-                        const bounded = Math.min(Math.max(value, 0), customMaxPrice - 10);
+                        const nextValue = e.target.value;
+                        setCustomMinInput(nextValue);
+
+                        if (nextValue === "") {
+                          return;
+                        }
+
+                        const parsed = Number(nextValue);
+                        if (Number.isNaN(parsed)) return;
+
+                        const bounded = Math.min(Math.max(parsed, 0), customMaxPrice - 10);
                         setCustomMinPrice(bounded);
+                      }}
+                      onBlur={() => {
+                        if (customMinInput.trim() === "") {
+                          const resetValue = 0;
+                          setCustomMinPrice(resetValue);
+                          setCustomMinInput(String(resetValue));
+                        }
                       }}
                       className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
                     />
@@ -286,7 +306,7 @@ const HomePage = () => {
                   </div>
                 </div>
 
-                <div className="space-y-3 rounded-3xl border border-gray-200 bg-slate-50 p-4">
+                <div className="space-y-3 rounded-3xl border border-gray-200 bg-slate-50 p-4 max-w-3xl mx-auto">
                   <div className="mb-3 flex items-center justify-between gap-3 text-sm text-gray-700">
                     <div className="space-y-1">
                       <p className="uppercase tracking-[0.2em] text-[10px] text-gray-500">Precio mínimo</p>
@@ -309,7 +329,7 @@ const HomePage = () => {
                       setCustomMinPrice(minValue);
                       setCustomMaxPrice(maxValue);
                     }}
-                    className="relative flex h-10 w-full touch-none select-none items-center"
+                    className="relative flex h-10 w-full max-w-[580px] touch-none select-none items-center"
                   >
                     <Slider.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-gray-200">
                       <Slider.Range className="absolute h-full bg-blue-600" />
