@@ -20,6 +20,9 @@ const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [showFilters, setShowFilters] = useState(false);
+  const [priceFilter, setPriceFilter] = useState("none");
+  const [customMinPrice, setCustomMinPrice] = useState(0);
+  const [customMaxPrice, setCustomMaxPrice] = useState(1200);
 
   // --- FUNCIÓN HELPER PARA IMÁGENES (Sirve para productos y usuarios) ---
   const getImageUrl = (imagePath) => {
@@ -101,15 +104,26 @@ const HomePage = () => {
   }, []);
 
   // --- LÓGICA DE FILTRADO ---
-  const filteredProducts = products.filter((product) => {
+  const matchedProducts = products.filter((product) => {
     const matchesSearch = 
       product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description?.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesCategory = selectedCategory === "Todos" || product.category === selectedCategory;
+    const minPrice = customMinPrice === null ? 0 : customMinPrice;
+    const matchesPrice =
+      priceFilter === "free"
+        ? product.price === 0
+        : priceFilter === "paid"
+        ? product.price > 0
+        : priceFilter === "custom"
+        ? product.price >= minPrice && product.price <= customMaxPrice
+        : true;
 
-    return matchesSearch && matchesCategory;
+    return matchesSearch && matchesCategory && matchesPrice;
   });
+
+  const filteredProducts = [...matchedProducts];
 
   // --- RENDERIZADO ---
   if (loading) {
@@ -172,6 +186,100 @@ const HomePage = () => {
                 {catName}
               </button>
             ))}
+          </div>
+
+          <div className="mt-4">
+            <h4 className="font-medium text-gray-900 mb-2">Filtrar por precio</h4>
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button
+                type="button"
+                onClick={() => setPriceFilter("free")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  priceFilter === "free"
+                    ? "bg-blue-600 text-white shadow-md transform scale-105"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-transparent"
+                }`}
+              >
+                Gratuitos
+              </button>
+              <button
+                type="button"
+                onClick={() => setPriceFilter("paid")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  priceFilter === "paid"
+                    ? "bg-blue-600 text-white shadow-md transform scale-105"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-transparent"
+                }`}
+              >
+                De pago
+              </button>
+              <button
+                type="button"
+                onClick={() => setPriceFilter("custom")}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  priceFilter === "custom"
+                    ? "bg-blue-600 text-white shadow-md transform scale-105"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-transparent"
+                }`}
+              >
+                Precio personalizado
+              </button>
+            </div>
+
+            {priceFilter === "custom" && (
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 items-end">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600">Mínimo</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max={customMaxPrice}
+                      value={customMinPrice === null ? "" : customMinPrice}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        if (newValue === "") {
+                          setCustomMinPrice(null);
+                          return;
+                        }
+                        const value = Number(newValue);
+                        const bounded = Math.min(Math.max(value, 0), customMaxPrice);
+                        setCustomMinPrice(Number.isNaN(bounded) ? 0 : bounded);
+                      }}
+                      className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600">Máximo</label>
+                    <input
+                      type="number"
+                      min={customMinPrice}
+                      max="1200"
+                      value={customMaxPrice}
+                      onChange={(e) => {
+                        const value = Number(e.target.value);
+                        const bounded = Math.min(Math.max(value, customMinPrice), 1200);
+                        setCustomMaxPrice(isNaN(bounded) ? customMaxPrice : bounded);
+                      }}
+                      className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-medium text-gray-600">Rango</label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1200"
+                      step="10"
+                      value={customMaxPrice}
+                      onChange={(e) => setCustomMaxPrice(Math.max(Number(e.target.value), customMinPrice))}
+                      className="mt-1 w-full max-w-[260px] accent-blue-600"
+                    />
+                    <div className="mt-1 text-xs text-gray-500">{customMinPrice} € - {customMaxPrice} €</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
