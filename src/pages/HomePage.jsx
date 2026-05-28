@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as Slider from '@radix-ui/react-slider';
 import { Search, SlidersHorizontal, X, Loader2 } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { ProductCard } from '../components/common/ProductCard';
@@ -23,6 +24,11 @@ const HomePage = () => {
   const [priceFilter, setPriceFilter] = useState("none");
   const [customMinPrice, setCustomMinPrice] = useState(0);
   const [customMaxPrice, setCustomMaxPrice] = useState(1200);
+  const [customMaxInput, setCustomMaxInput] = useState("1200");
+
+  useEffect(() => {
+    setCustomMaxInput(String(customMaxPrice));
+  }, [customMaxPrice]);
 
   // --- FUNCIÓN HELPER PARA IMÁGENES (Sirve para productos y usuarios) ---
   const getImageUrl = (imagePath) => {
@@ -227,24 +233,21 @@ const HomePage = () => {
             </div>
 
             {priceFilter === "custom" && (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 items-end">
                   <div>
                     <label className="block text-xs font-medium text-gray-600">Mínimo</label>
                     <input
                       type="number"
                       min="0"
-                      max={customMaxPrice}
-                      value={customMinPrice === null ? "" : customMinPrice}
+                      max={customMaxPrice - 10}
+                      step="10"
+                      value={customMinPrice}
                       onChange={(e) => {
-                        const newValue = e.target.value;
-                        if (newValue === "") {
-                          setCustomMinPrice(null);
-                          return;
-                        }
-                        const value = Number(newValue);
-                        const bounded = Math.min(Math.max(value, 0), customMaxPrice);
-                        setCustomMinPrice(Number.isNaN(bounded) ? 0 : bounded);
+                        const value = Number(e.target.value);
+                        if (Number.isNaN(value)) return;
+                        const bounded = Math.min(Math.max(value, 0), customMaxPrice - 10);
+                        setCustomMinPrice(bounded);
                       }}
                       className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
                     />
@@ -253,30 +256,67 @@ const HomePage = () => {
                     <label className="block text-xs font-medium text-gray-600">Máximo</label>
                     <input
                       type="number"
-                      min={customMinPrice}
+                      min={customMinPrice + 10}
                       max="1200"
-                      value={customMaxPrice}
+                      step="10"
+                      value={customMaxInput}
                       onChange={(e) => {
-                        const value = Number(e.target.value);
-                        const bounded = Math.min(Math.max(value, customMinPrice), 1200);
-                        setCustomMaxPrice(isNaN(bounded) ? customMaxPrice : bounded);
+                        const nextValue = e.target.value;
+                        setCustomMaxInput(nextValue);
+
+                        if (nextValue === "") {
+                          return;
+                        }
+
+                        const parsed = Number(nextValue);
+                        if (Number.isNaN(parsed)) return;
+
+                        const bounded = Math.min(Math.max(parsed, customMinPrice + 10), 1200);
+                        setCustomMaxPrice(bounded);
+                      }}
+                      onBlur={() => {
+                        if (customMaxInput.trim() === "") {
+                          const resetValue = Math.max(customMinPrice + 10, 0);
+                          setCustomMaxPrice(resetValue);
+                          setCustomMaxInput(String(resetValue));
+                        }
                       }}
                       className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
                     />
                   </div>
-                  <div className="sm:col-span-2">
-                    <label className="block text-xs font-medium text-gray-600">Rango</label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="1200"
-                      step="10"
-                      value={customMaxPrice}
-                      onChange={(e) => setCustomMaxPrice(Math.max(Number(e.target.value), customMinPrice))}
-                      className="mt-1 w-full max-w-[260px] accent-blue-600"
-                    />
-                    <div className="mt-1 text-xs text-gray-500">{customMinPrice} € - {customMaxPrice} €</div>
+                </div>
+
+                <div className="space-y-3 rounded-3xl border border-gray-200 bg-slate-50 p-4">
+                  <div className="mb-3 flex items-center justify-between gap-3 text-sm text-gray-700">
+                    <div className="space-y-1">
+                      <p className="uppercase tracking-[0.2em] text-[10px] text-gray-500">Precio mínimo</p>
+                      <p className="text-base font-semibold text-gray-900">{customMinPrice} €</p>
+                    </div>
+                    <div className="space-y-1 text-right">
+                      <p className="uppercase tracking-[0.2em] text-[10px] text-gray-500">Precio máximo</p>
+                      <p className="text-base font-semibold text-gray-900">{customMaxPrice} €</p>
+                    </div>
                   </div>
+
+                  <Slider.Root
+                    value={[customMinPrice, customMaxPrice]}
+                    min={0}
+                    max={1200}
+                    step={10}
+                    onValueChange={([nextMin, nextMax]) => {
+                      const minValue = Math.min(nextMin, nextMax - 10);
+                      const maxValue = Math.max(nextMax, nextMin + 10);
+                      setCustomMinPrice(minValue);
+                      setCustomMaxPrice(maxValue);
+                    }}
+                    className="relative flex h-10 w-full touch-none select-none items-center"
+                  >
+                    <Slider.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-gray-200">
+                      <Slider.Range className="absolute h-full bg-blue-600" />
+                    </Slider.Track>
+                    <Slider.Thumb className="block h-5 w-5 rounded-full border border-white bg-white shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" aria-label="Filtro precio mínimo" />
+                    <Slider.Thumb className="block h-5 w-5 rounded-full border border-white bg-white shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" aria-label="Filtro precio máximo" />
+                  </Slider.Root>
                 </div>
               </div>
             )}
