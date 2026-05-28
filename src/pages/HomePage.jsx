@@ -239,8 +239,8 @@ const HomePage = () => {
 
             {priceFilter === "custom" && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 items-end">
-                  <div>
+                <div className="grid w-full max-w-sm grid-cols-2 gap-3">
+                  <div className="max-w-[140px]">
                     <label className="block text-xs font-medium text-gray-600">Mínimo</label>
                     <input
                       type="number"
@@ -272,7 +272,7 @@ const HomePage = () => {
                       className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
                     />
                   </div>
-                  <div>
+                  <div className="max-w-[140px]">
                     <label className="block text-xs font-medium text-gray-600">Máximo</label>
                     <input
                       type="number"
@@ -306,7 +306,7 @@ const HomePage = () => {
                   </div>
                 </div>
 
-                <div className="space-y-3 rounded-3xl border border-gray-200 bg-slate-50 p-4 max-w-3xl mx-auto">
+                <div className="rounded-3xl border border-gray-200 bg-slate-50 p-4 max-w-[560px]">
                   <div className="mb-3 flex items-center justify-between gap-3 text-sm text-gray-700">
                     <div className="space-y-1">
                       <p className="uppercase tracking-[0.2em] text-[10px] text-gray-500">Precio mínimo</p>
@@ -329,7 +329,7 @@ const HomePage = () => {
                       setCustomMinPrice(minValue);
                       setCustomMaxPrice(maxValue);
                     }}
-                    className="relative flex h-10 w-full max-w-[580px] touch-none select-none items-center"
+                    className="relative flex h-10 w-full touch-none select-none items-center"
                   >
                     <Slider.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-gray-200">
                       <Slider.Range className="absolute h-full bg-blue-600" />
