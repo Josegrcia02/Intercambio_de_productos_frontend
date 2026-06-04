@@ -62,14 +62,12 @@
 - **Tailwind CSS 4.1** para estilos utilitarios
 - **Radix UI** para componentes accesibles
 - **Diseño Responsive** - Mobile-first approach
-- **Dark Mode** - Soporte para modo oscuro
 - **Animaciones Suaves** - UX mejorada con transiciones
 
 ### 📱 Progressive Web App
 - **Service Worker** para funcionamiento offline
 - **Manifest.json** - Instalable como app nativa
 - **Cache Strategies** - Optimización de carga
-- **Push Notifications** - Notificaciones en tiempo real
 
 ### 🔄 Gestión de Estado
 - **React Context API** para estado global
