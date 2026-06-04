@@ -795,8 +795,8 @@ npm run dev -- --port 5174
 
 ## 📞 Soporte y Contacto
 
-- 👨‍💻 **Autor:** José García Martínez-Abarca
-- 🎓 **Proyecto:** DAW2 - Desarrollo Web Intermodular
+- 👨‍💻 **Autor:** José García Martínez-Abarca - Francisco Valcárcel Lardín
+- 🎓 **Proyecto:** DAW - Desarrollo Web Intermodular
 - 🐛 **Reportar bugs:** Issues en GitHub
 - 💬 **Preguntas:** Discussions en GitHub
 - 📚 **Backend:** [Intercambio_de_productos](https://github.com/Josegrcia02/Intercambio_de_productos)
@@ -805,17 +805,7 @@ npm run dev -- --port 5174
 
 ## 📄 Licencia
 
-Este proyecto es parte del curriculum de **DAW2 (Desarrollo de Aplicaciones Web 2)**.
-
----
-
-## 🎉 Agradecimientos
-
-- **React Community** por herramientas increíbles
-- **Vite** por el mejor build tool
-- **Tailwind CSS** por CSS utilitario
-- **Radix UI** por componentes accesibles
-- **Mi profesor de DAW2** por la guía
+Este proyecto es parte del curriculum de **DAW2 (Desarrollo de Aplicaciones Web )**.
 
 ---
 
